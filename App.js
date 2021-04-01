@@ -2,7 +2,7 @@ import React from 'react';
 import {Image,StyleSheet,Text,View,SafeAreaView,TouchableOpacity} from 'react-native';
 import data from './data';
 import Swiper from 'react-native-deck-swiper';
-import { Transitioning, Transition } from 'react-native-reanimated';
+import { Transitioning } from 'react-native-reanimated';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -11,30 +11,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 const stackSize = 2;
 
-const ANIMATION_DURATION = 200;
-
-const transition = (
-  <Transition.Sequence>
-    <Transition.Out
-      type='slide-bottom'
-      durationMs={ANIMATION_DURATION}
-      interpolation='easeIn'
-    />
-    <Transition.Together>
-      <Transition.In
-        type='fade'
-        durationMs={ANIMATION_DURATION}
-        delayMs={ANIMATION_DURATION / 2}
-      />
-      <Transition.In
-        type='slide-bottom'
-        durationMs={ANIMATION_DURATION}
-        delayMs={ANIMATION_DURATION / 2}
-        interpolation='easeOut'
-      />
-    </Transition.Together>
-  </Transition.Sequence>
-);
 
 const swiperRef = React.createRef();
 const transitionRef = React.createRef();
@@ -58,13 +34,13 @@ const CardDetails = ({ index }) => (
 );
 
 function Home({ navigation }) {
-  const [index, setIndex] = React.useState(0);
+  // const [index, setIndex] = React.useState(0);
+  const index=0;
   const [countL, setCountL] = React.useState(0);
   const [countR, setCountR] = React.useState(0);
 
   const onSwiped = () => {
     transitionRef.current.animateNextTransition();
-    setIndex((index + 1) % data.length);
   };
 
   return (
@@ -80,7 +56,7 @@ function Home({ navigation }) {
         <Swiper
           ref={swiperRef}
           cards={data}
-          cardIndex={index}
+          // cardIndex={index}
           renderCard={card => <Card card={card} />}
           infinite
           backgroundColor={'transparent'}
@@ -132,7 +108,6 @@ function Home({ navigation }) {
       <View style={styles.bottomContainer}>
         <Transitioning.View
           ref={transitionRef}
-          transition={transition}
           style={styles.bottomContainerMeta}
         >
           <CardDetails index={index} />
@@ -167,7 +142,7 @@ function Home({ navigation }) {
   );
 }
 
-function DetailsScreen({ route, navigation }) {
+function DetailsScreen({ route }) {
   const { countL } = route.params;
   const { countR } = route.params;
   return (
